@@ -34,7 +34,7 @@ public class AuthenticationService {
           .getBody()
           .getSubject();
 
-      if (user != null) 
+      if (user != null)
     	  return new UsernamePasswordAuthenticationToken(user, null, emptyList());
     }
     return null;
