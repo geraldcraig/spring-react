@@ -18,24 +18,24 @@ public class AuthenticationService {
 
   static public void addToken(HttpServletResponse res, String username) {
     String JwtToken = Jwts.builder().setSubject(username)
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-        .signWith(SignatureAlgorithm.HS512, SIGNINGKEY)
-        .compact();
+            .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
+            .signWith(SignatureAlgorithm.HS512, SIGNINGKEY)
+            .compact();
     res.addHeader("Authorization", PREFIX + " " + JwtToken);
-	res.addHeader("Access-Control-Expose-Headers", "Authorization");
+    res.addHeader("Access-Control-Expose-Headers", "Authorization");
   }
 
   static public Authentication getAuthentication(HttpServletRequest request) {
     String token = request.getHeader("Authorization");
     if (token != null) {
       String user = Jwts.parser()
-          .setSigningKey(SIGNINGKEY)
-          .parseClaimsJws(token.replace(PREFIX, ""))
-          .getBody()
-          .getSubject();
+              .setSigningKey(SIGNINGKEY)
+              .parseClaimsJws(token.replace(PREFIX, ""))
+              .getBody()
+              .getSubject();
 
       if (user != null)
-    	  return new UsernamePasswordAuthenticationToken(user, null, emptyList());
+        return new UsernamePasswordAuthenticationToken(user, null, emptyList());
     }
     return null;
   }
